@@ -1,6 +1,6 @@
 {
   "name": "pdf-merger",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Watch-folder PDF merge service — drop PDFs in inbox/, get a combined dist/merged.pdf",
   "type": "module",
   "private": true,
@@ -13,8 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "chokidar": "^4.0.3",
-    "pdf-lib": "^1.17.1"
+    "@cantoo/pdf-lib": "^2.7.1",
+    "chokidar": "^4.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.15.0",

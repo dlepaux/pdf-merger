@@ -2,9 +2,9 @@ import assert from 'node:assert/strict'
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument } from '@cantoo/pdf-lib'
 import { listPdfs, mergePdfs, writeAtomic } from './merge.ts'
-import { makeTempDir, writePdf } from './fixtures.test-helper.ts'
+import { makeEncryptedPdf, makeTempDir, writePdf } from './fixtures.test-helper.ts'
 
 test('listPdfs returns only PDFs, lexicographically sorted', async () => {
   const dir = await makeTempDir()
@@ -42,6 +42,41 @@ test('mergePdfs skips corrupt files and keeps the rest', async () => {
   assert.deepEqual(result.merged, [good])
   assert.equal(result.skipped.length, 1)
   assert.equal(result.skipped[0]?.file, bad)
+})
+
+test('mergePdfs decrypts owner-password-only PDFs (empty user password)', async () => {
+  const dir = await makeTempDir()
+  const plain = await writePdf(dir, '01-plain.pdf', [111])
+  const encrypted = join(dir, '02-encrypted.pdf')
+  const encryptedBytes = await makeEncryptedPdf([222])
+  await writeFile(encrypted, encryptedBytes)
+
+  // Guard the fixture itself: must use RC4 V2/R3 like the real payroll files,
+  // not AES — otherwise this test stops covering the production cipher.
+  const raw = Buffer.from(encryptedBytes).toString('latin1')
+  assert.ok(raw.includes('/V 2') && raw.includes('/R 3'), 'fixture must be RC4 V2/R3')
+
+  const result = await mergePdfs([plain, encrypted])
+  assert.ok(result)
+  assert.deepEqual(result.merged, [plain, encrypted])
+  assert.deepEqual(result.skipped, [])
+
+  const doc = await PDFDocument.load(result.bytes)
+  const widths = doc.getPages().map((p) => p.getWidth())
+  assert.deepEqual(widths, [111, 222])
+})
+
+test('mergePdfs skips PDFs locked with a real user password', async () => {
+  const dir = await makeTempDir()
+  const locked = join(dir, 'locked.pdf')
+  await writeFile(locked, await makeEncryptedPdf([100], 'hunter2'))
+  const good = await writePdf(dir, 'good.pdf', [333])
+
+  const result = await mergePdfs([locked, good])
+  assert.ok(result)
+  assert.deepEqual(result.merged, [good])
+  assert.equal(result.skipped.length, 1)
+  assert.equal(result.skipped[0]?.file, locked)
 })
 
 test('mergePdfs returns null when nothing is mergeable', async () => {

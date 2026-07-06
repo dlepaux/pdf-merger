@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFile, readdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument } from '@cantoo/pdf-lib'
 import { runMerge } from './service.ts'
 import { makeTempDir, writePdf } from './fixtures.test-helper.ts'
 

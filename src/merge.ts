@@ -1,6 +1,6 @@
 import { readdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { PDFDocument } from 'pdf-lib'
+import { EncryptedPDFError, PDFDocument } from '@cantoo/pdf-lib'
 
 export type SkippedFile = { file: string; reason: string }
 
@@ -20,6 +20,20 @@ export async function listPdfs(dir: string): Promise<string[]> {
 }
 
 /**
+ * Owner-password-only PDFs (typical for payroll slips: viewable without a
+ * password, editing restricted) decrypt with the empty user password.
+ * PDFs locked with a real user password still fail and get skipped.
+ */
+async function loadPdf(bytes: Uint8Array): Promise<PDFDocument> {
+  try {
+    return await PDFDocument.load(bytes)
+  } catch (err) {
+    if (err instanceof EncryptedPDFError) return PDFDocument.load(bytes, { password: '' })
+    throw err
+  }
+}
+
+/**
  * Merge files in given order. Unreadable/corrupt files are skipped and
  * reported, not thrown — one bad drop must not take the service down.
  * Returns null when nothing merged.
@@ -31,7 +45,7 @@ export async function mergePdfs(files: string[]): Promise<MergeResult | null> {
 
   for (const file of files) {
     try {
-      const src = await PDFDocument.load(await readFile(file))
+      const src = await loadPdf(await readFile(file))
       const pages = await out.copyPages(src, src.getPageIndices())
       for (const page of pages) out.addPage(page)
       merged.push(file)
