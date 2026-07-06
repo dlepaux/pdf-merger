@@ -1,6 +1,6 @@
 {
   "name": "pdf-merger",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Watch-folder PDF merge service — drop PDFs in inbox/, get a combined dist/merged.pdf",
   "type": "module",
   "private": true,
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node src/index.ts",
-    "test": "node --test src/merge.test.ts src/service.test.ts",
+    "test": "node --test src/log.test.ts src/merge.test.ts src/service.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

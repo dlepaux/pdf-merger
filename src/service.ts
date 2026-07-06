@@ -1,6 +1,7 @@
 import { mkdir } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import chokidar, { type FSWatcher } from 'chokidar'
+import { displayPath, log, shortReason } from './log.ts'
 import { listPdfs, mergePdfs, writeAtomic } from './merge.ts'
 
 export type ServiceConfig = {
@@ -16,22 +17,23 @@ type ResolvedConfig = Required<ServiceConfig>
 export async function runMerge(cfg: ResolvedConfig): Promise<void> {
   const files = await listPdfs(cfg.inboxDir)
   if (files.length === 0) {
-    console.log('[pdf-merger] inbox empty, nothing to merge')
+    log.info('inbox empty — waiting for PDFs')
     return
   }
 
   const result = await mergePdfs(files)
   for (const s of result?.skipped ?? []) {
-    console.warn(`[pdf-merger] skipped ${s.file}: ${s.reason}`)
+    log.warn(`skipped ${displayPath(s.file)} — ${shortReason(s.reason)}`)
   }
   if (result === null) {
-    console.warn('[pdf-merger] no readable PDF in inbox, output unchanged')
+    log.warn('no readable PDF in inbox — output unchanged')
     return
   }
 
   const outPath = join(cfg.distDir, cfg.outputName)
   await writeAtomic(outPath, result.bytes)
-  console.log(`[pdf-merger] merged ${result.merged.length} file(s) -> ${outPath}`)
+  const count = result.merged.length
+  log.success(`merged ${count} file${count === 1 ? '' : 's'} → ${displayPath(outPath)}`)
 }
 
 /**
@@ -68,7 +70,7 @@ export async function startService(config: ServiceConfig): Promise<FSWatcher> {
     try {
       await runMerge(cfg)
     } catch (err) {
-      console.error('[pdf-merger] merge pass failed:', err)
+      log.error(`merge pass failed — ${err instanceof Error ? err.message : String(err)}`)
     } finally {
       running = false
     }

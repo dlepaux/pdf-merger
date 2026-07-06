@@ -30,6 +30,7 @@ Environment variables (no `.env` loading — plain process env):
 | --- | --- | --- |
 | `PDF_MERGER_INBOX` | `inbox` | Folder watched for PDFs |
 | `PDF_MERGER_DIST` | `dist` | Folder receiving `merged.pdf` |
+| `NO_COLOR` | unset | Set to disable colored log output (also auto-disabled when not a TTY) |
 
 ## Development
 
