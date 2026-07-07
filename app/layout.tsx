@@ -6,7 +6,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'pdf-merger — merge PDFs in your browser',
   description:
-    'Merge PDF files in your browser — drop, reorder, download. Your files never leave your device; only anonymous page-view analytics are collected.',
+    'Merge PDF files in your browser — drop, reorder, download. Your files never leave your device.',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

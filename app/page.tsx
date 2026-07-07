@@ -38,9 +38,7 @@ export default function Page() {
 
       <SkippedList skipped={skipped} />
 
-      <footer className="text-center text-xs opacity-50">
-        Your PDFs never leave your browser · anonymous page-view analytics only
-      </footer>
+      <footer className="text-center text-xs opacity-50">Your PDFs never leave your browser</footer>
     </main>
   )
 }
