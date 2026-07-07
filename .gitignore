@@ -1,5 +1,6 @@
-node_modules/
-dist/
-inbox/*
-!inbox/.gitkeep
-*.tmp
+/node_modules
+/.next
+/out
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store

@@ -1,23 +1,39 @@
 {
   "name": "pdf-merger",
-  "version": "0.2.1",
-  "description": "Watch-folder PDF merge service — drop PDFs in inbox/, get a combined dist/merged.pdf",
-  "type": "module",
+  "version": "0.3.0",
   "private": true,
-  "engines": {
-    "node": ">=22.18"
-  },
+  "type": "module",
+  "engines": { "node": ">=18.18" },
   "scripts": {
-    "start": "node src/index.ts",
-    "test": "node --test src/log.test.ts src/merge.test.ts src/service.test.ts",
+    "dev": "next dev",
+    "build": "next build",
+    "preview": "npx serve out",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@cantoo/pdf-lib": "^2.7.1",
-    "chokidar": "^4.0.3"
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^22.15.0",
-    "typescript": "^5.8.0"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "daisyui": "^5.0.0",
+    "jsdom": "^25.0.1",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.8.0",
+    "vitest": "^2.1.8"
   }
 }
