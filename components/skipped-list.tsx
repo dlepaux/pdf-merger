@@ -7,8 +7,8 @@ export function SkippedList({ skipped }: Props) {
   if (skipped.length === 0) return null
   return (
     <ul className="flex flex-col gap-2">
-      {skipped.map((s) => (
-        <li key={s.name} role="alert" className="alert alert-warning">
+      {skipped.map((s, i) => (
+        <li key={`${s.name}-${i}`} role="alert" className="alert alert-warning">
           <span>
             ⚠ {s.name} — {friendlyReason(s.reason)}, skipped
           </span>

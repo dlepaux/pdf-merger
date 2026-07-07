@@ -36,7 +36,7 @@ export function FileList({ items, onReorder, onRemove }: Props) {
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext id="file-list" sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
         <ul className="flex flex-col gap-2">
           {items.map((item) => (
