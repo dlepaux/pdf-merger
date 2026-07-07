@@ -30,3 +30,14 @@ test('ignores non-PDF files', async () => {
 
   await waitFor(() => expect(onAdd).not.toHaveBeenCalled())
 })
+
+test('is keyboard-operable: Enter opens the file picker', async () => {
+  const onAdd = vi.fn()
+  render(<DropZone onAdd={onAdd} />)
+  const region = screen.getByRole('button', { name: /add pdfs/i })
+  const clickSpy = vi.spyOn(HTMLInputElement.prototype, 'click').mockImplementation(() => {})
+  region.focus()
+  await userEvent.keyboard('{Enter}')
+  expect(clickSpy).toHaveBeenCalledTimes(1)
+  clickSpy.mockRestore()
+})

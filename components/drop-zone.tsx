@@ -25,6 +25,9 @@ export function DropZone({ onAdd }: Props) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label="Add PDFs: drop files here or activate to choose files"
       onDragOver={(e: DragEvent) => {
         e.preventDefault()
         setDragging(true)
@@ -36,7 +39,13 @@ export function DropZone({ onAdd }: Props) {
         void ingest(e.dataTransfer.files)
       }}
       onClick={() => inputRef.current?.click()}
-      className={`flex cursor-pointer flex-col items-center justify-center rounded-box border-2 border-dashed p-10 text-center transition-colors ${
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          inputRef.current?.click()
+        }
+      }}
+      className={`flex cursor-pointer flex-col items-center justify-center rounded-box border-2 border-dashed p-10 text-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
         dragging ? 'border-primary bg-primary/10' : 'border-base-300 bg-base-100'
       }`}
     >

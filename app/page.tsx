@@ -11,8 +11,14 @@ export default function Page() {
   const [items, setItems] = useState<PdfItem[]>([])
   const [skipped, setSkipped] = useState<SkippedFile[]>([])
 
-  const addItems = (added: PdfItem[]): void => setItems((prev) => [...prev, ...added])
-  const removeItem = (id: string): void => setItems((prev) => prev.filter((i) => i.id !== id))
+  const addItems = (added: PdfItem[]): void => {
+    setItems((prev) => [...prev, ...added])
+    setSkipped([])
+  }
+  const removeItem = (id: string): void => {
+    setItems((prev) => prev.filter((i) => i.id !== id))
+    setSkipped([])
+  }
 
   return (
     <main className="mx-auto flex max-w-2xl flex-col gap-6 p-6">

@@ -10,5 +10,7 @@ export function downloadBytes(bytes: Uint8Array, filename: string): void {
   document.body.appendChild(anchor)
   anchor.click()
   anchor.remove()
-  URL.revokeObjectURL(url)
+  // Deferred one tick: some browsers cancel the download if the blob URL
+  // is revoked in the same tick as the anchor click.
+  setTimeout(() => URL.revokeObjectURL(url), 0)
 }
