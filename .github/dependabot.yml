@@ -1,0 +1,41 @@
+# Dependabot keeps dependencies patched so security alerts stay small and
+# actionable. Commit prefix is "chore(deps)" on purpose: semantic-release
+# treats chore as non-releasing, so dependency bumps never cut a version on
+# their own — only a real fix/feat does.
+#
+# `cooldown` holds newly published versions back for 7 days. A fresh release is
+# the prime window for a hijacked package; waiting lets the ecosystem catch it.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    groups:
+      # Batched so a week of patches arrives as one PR to review, not dozens.
+      dev-minor-patch:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+      prod-minor-patch:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+      # Majors stay ungrouped — each gets its own PR for manual review.
+
+  # Keep the GitHub Actions used by CI current too.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns: ["*"]

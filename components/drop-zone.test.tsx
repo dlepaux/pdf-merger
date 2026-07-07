@@ -1,0 +1,59 @@
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { expect, test, vi } from 'vitest'
+import { DropZone } from './drop-zone'
+
+function pdf(name: string): File {
+  return new File([new Uint8Array([1, 2, 3])], name, { type: 'application/pdf' })
+}
+
+test('reads picked PDFs into items and calls onAdd', async () => {
+  const onAdd = vi.fn()
+  const { container } = render(<DropZone onAdd={onAdd} />)
+  const input = container.querySelector('input[type="file"]') as HTMLInputElement
+
+  await userEvent.upload(input, [pdf('a.pdf'), pdf('b.pdf')])
+
+  await waitFor(() => expect(onAdd).toHaveBeenCalledOnce())
+  const items = onAdd.mock.calls[0][0]
+  expect(items.map((i: { name: string }) => i.name)).toEqual(['a.pdf', 'b.pdf'])
+  expect(items[0].id).toBeTruthy()
+  expect(items[0].bytes).toBeInstanceOf(Uint8Array)
+})
+
+test('ignores non-PDF files', async () => {
+  const onAdd = vi.fn()
+  const { container } = render(<DropZone onAdd={onAdd} />)
+  const input = container.querySelector('input[type="file"]') as HTMLInputElement
+
+  await userEvent.upload(input, new File(['hi'], 'notes.txt', { type: 'text/plain' }))
+
+  await waitFor(() => expect(onAdd).not.toHaveBeenCalled())
+})
+
+test('is keyboard-operable: Enter opens the file picker', async () => {
+  const onAdd = vi.fn()
+  render(<DropZone onAdd={onAdd} />)
+  const region = screen.getByRole('button', { name: /add pdfs/i })
+  const clickSpy = vi.spyOn(HTMLInputElement.prototype, 'click').mockImplementation(() => {})
+  region.focus()
+  await userEvent.keyboard('{Enter}')
+  expect(clickSpy).toHaveBeenCalledTimes(1)
+  clickSpy.mockRestore()
+})
+
+test('activating the drop zone opens the picker once (input click does not bubble back)', async () => {
+  render(<DropZone onAdd={vi.fn()} />)
+  const region = screen.getByRole('button', { name: /add pdfs/i })
+  let clicks = 0
+  // Let the programmatic click() dispatch a real bubbling event; without the
+  // input's stopPropagation it would re-trigger the wrapper's onClick and loop.
+  const spy = vi.spyOn(HTMLInputElement.prototype, 'click').mockImplementation(function (this: HTMLInputElement) {
+    clicks++
+    if (clicks > 3) return
+    this.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
+  await userEvent.click(region)
+  expect(clicks).toBe(1)
+  spy.mockRestore()
+})
