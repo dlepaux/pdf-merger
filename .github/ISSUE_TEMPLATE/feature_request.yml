@@ -1,0 +1,45 @@
+name: Feature request
+description: Suggest an improvement or new capability
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. pdf-merger deliberately stays small and
+        client-side (nothing is ever uploaded). Proposals that keep that
+        constraint — and stay focused on merging — are the easiest to land.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+      description: The use case or pain point behind the request.
+      placeholder: |
+        I often need to drop the last page of a scan before merging, and
+        right now I have to trim it in another tool first.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What would you like to see? Rough sketches welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches or existing workarounds you've tried.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Fits the project's constraints
+      options:
+        - label: This keeps processing fully client-side (no upload / no server).
+          required: true
