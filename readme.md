@@ -1,7 +1,7 @@
 # pdf-merger
 
 [![CI](https://github.com/dlepaux/pdf-merger/actions/workflows/ci.yml/badge.svg)](https://github.com/dlepaux/pdf-merger/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](license.md)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Merge PDFs in your browser — drop, reorder, download. Your files never leave your device.
 
@@ -22,4 +22,4 @@ Push to `main` runs [`ci.yml`](.github/workflows/ci.yml): a quality gate (test, 
 
 ## More
 
-[Contributing](contributing.md) · [Security](security.md) · [MIT](license.md) © David Lepaux
+[Contributing](contributing.md) · [Security](security.md) · [MIT](LICENSE) © David Lepaux
