@@ -3,7 +3,7 @@
 [![CI](https://github.com/dlepaux/pdf-merger/actions/workflows/ci.yml/badge.svg)](https://github.com/dlepaux/pdf-merger/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](license.md)
 
-Merge PDFs in your browser — drop, reorder, download. Nothing is uploaded; your files never leave the page.
+Merge PDFs in your browser — drop, reorder, download. Your files never leave your device; only anonymous, cookieless page-view analytics are collected.
 
 **[pdf-merger.lepaux.com](https://pdf-merger.lepaux.com)**
 
@@ -18,7 +18,7 @@ npm run build    # static export → out/
 
 Next.js (static export) · React · Tailwind + DaisyUI · dnd-kit · [`@cantoo/pdf-lib`](https://github.com/cantoo-scribe/pdf-lib). Requires Node ≥ 18.18.
 
-Push to `main` runs [`ci.yml`](.github/workflows/ci.yml): test → release ([semantic-release](https://github.com/semantic-release/semantic-release)) → deploy to GitHub Pages.
+Push to `main` runs [`ci.yml`](.github/workflows/ci.yml): test → release ([semantic-release](https://github.com/semantic-release/semantic-release)) → deploy to GitHub Pages. Set the repo variable `NEXT_PUBLIC_GA_ID` to enable cookieless page-view analytics (unset = none).
 
 ## More
 

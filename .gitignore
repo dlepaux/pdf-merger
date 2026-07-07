@@ -5,6 +5,10 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 
+# Local env files. .env.example is committed as documentation.
+.env.local
+.env*.local
+
 # Leftover data dirs from the old watch-folder service. They hold real personal
 # documents on this machine — this repo is published to a PUBLIC GitHub Pages
 # site, so these must never be committed. The web app does not use them.

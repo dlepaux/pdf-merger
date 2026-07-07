@@ -78,6 +78,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Set repo variable NEXT_PUBLIC_GA_ID to enable cookieless GA4 page
+          # views. Unset (e.g. in forks) → no analytics is bundled.
+          NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

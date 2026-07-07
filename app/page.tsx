@@ -24,7 +24,7 @@ export default function Page() {
     <main className="mx-auto flex max-w-2xl flex-col gap-6 p-6">
       <header className="text-center">
         <h1 className="text-3xl font-bold">pdf-merger</h1>
-        <p className="opacity-70">Merge PDFs in your browser. Nothing is uploaded.</p>
+        <p className="opacity-70">Merge PDFs in your browser — your files never leave your device.</p>
       </header>
 
       <DropZone onAdd={addItems} />
@@ -38,7 +38,9 @@ export default function Page() {
 
       <SkippedList skipped={skipped} />
 
-      <footer className="text-center text-xs opacity-50">100% client-side · your files never leave this page</footer>
+      <footer className="text-center text-xs opacity-50">
+        Your PDFs never leave your browser · anonymous page-view analytics only
+      </footer>
     </main>
   )
 }
