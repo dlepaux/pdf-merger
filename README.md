@@ -1,42 +1,36 @@
 # pdf-merger
 
-Watch-folder PDF merge service. Drop PDFs into `inbox/`, get one combined `dist/merged.pdf`. The service re-merges automatically on every add, change, or delete.
+Merge PDF files entirely in your browser — drop them in, drag to reorder, click Merge, and your combined `merged.pdf` downloads. **Nothing is uploaded: your files never leave the page.** Handy for stitching together sensitive documents (payroll slips, bank statements) without trusting a server.
 
-## Usage
+Live at **https://pdf-merger.lepaux.com**.
 
-```sh
-npm install
-npm start
-```
+## How it works
 
-Then drop `.pdf` files into `inbox/`. About a second after the last file settles, `dist/merged.pdf` is (re)written.
+- Drop PDFs onto the page (or click to pick them).
+- Drag the rows to set the merge order.
+- Click **Merge** — the combined PDF downloads automatically.
+- Owner-password-only PDFs (openable without a password) are decrypted automatically. Files locked with a real user password, and corrupt files, are skipped with an inline warning; the rest still merge.
 
-## Behavior
-
-- **Order**: files merge in lexicographic filename order. Prefix to control it: `01-cover.pdf`, `02-report.pdf`, `03-annex.pdf`.
-- **Full re-merge**: every pass merges the *current* content of `inbox/`. Deleting a file from `inbox/` removes its pages on the next pass.
-- **Encrypted PDFs**: owner-password-only files (openable without a password — typical for payroll slips and bank statements) are decrypted automatically via the empty user password. Files locked with a real user password are skipped with a warning.
-- **Corrupt files**: skipped with a warning in the log; the rest still merge.
-- **Half-copied files**: the watcher waits until a file's size is stable (~400 ms) before merging, so large copies don't produce broken output.
-- **Empty inbox**: nothing is written; the previous `dist/merged.pdf` is kept.
-- **Atomic output**: `merged.pdf` is written to a temp file and renamed, so it is never observable half-written.
-- **Known limitation**: embedded raster images inside *encrypted* PDFs can come out with wrong colors in rare cases ([upstream issue](https://github.com/cantoo-scribe/pdf-lib/issues/69)) — eyeball the output once if an encrypted source is image-heavy.
-
-## Configuration
-
-Environment variables (no `.env` loading — plain process env):
-
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `PDF_MERGER_INBOX` | `inbox` | Folder watched for PDFs |
-| `PDF_MERGER_DIST` | `dist` | Folder receiving `merged.pdf` |
-| `NO_COLOR` | unset | Set to disable colored log output (also auto-disabled when not a TTY) |
+All processing runs client-side via [`@cantoo/pdf-lib`](https://github.com/cantoo-scribe/pdf-lib). There is no backend and no network request after the page loads.
 
 ## Development
 
-Requires Node >= 22.18 (runs TypeScript directly via native type stripping — no build step).
-
 ```sh
-npm test           # node --test
-npm run typecheck  # tsc --noEmit
+npm install
+npm run dev      # http://localhost:3000
+npm test         # Vitest
+npm run typecheck
+npm run build    # static export to out/
+npm run preview  # serve the built out/ locally
 ```
+
+Requires Node >= 18.18. Stack: Next.js (App Router, static export), React, Tailwind CSS v4 + DaisyUI, dnd-kit.
+
+## Deployment
+
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the static export and deploys it to GitHub Pages.
+
+One-time setup (outside this repo):
+- Repo **Settings → Pages → Source: GitHub Actions**.
+- DNS: add a `CNAME` record `pdf-merger` → `<your-gh-user>.github.io`.
+- The `public/CNAME` file binds the custom domain; GitHub auto-issues the HTTPS certificate.
