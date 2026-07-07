@@ -1,6 +1,6 @@
 {
   "name": "pdf-merger",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Merge PDF files entirely in your browser — drop, reorder, merge, download. Nothing is uploaded.",
@@ -31,7 +31,9 @@
     "email": "d.lepaux@gmail.com",
     "url": "https://david.lepaux.com"
   },
-  "engines": { "node": ">=18.18" },
+  "engines": {
+    "node": ">=18.18"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
