@@ -1,8 +1,36 @@
 {
   "name": "pdf-merger",
-  "version": "0.3.0",
+  "version": "0.0.0-development",
   "private": true,
   "type": "module",
+  "description": "Merge PDF files entirely in your browser — drop, reorder, merge, download. Nothing is uploaded.",
+  "keywords": [
+    "pdf",
+    "pdf-merge",
+    "merge-pdf",
+    "pdf-tools",
+    "client-side",
+    "browser",
+    "privacy",
+    "no-upload",
+    "nextjs",
+    "static-site",
+    "typescript"
+  ],
+  "homepage": "https://pdf-merger.lepaux.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dlepaux/pdf-merger"
+  },
+  "bugs": {
+    "url": "https://github.com/dlepaux/pdf-merger/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "David Lepaux",
+    "email": "d.lepaux@gmail.com",
+    "url": "https://david.lepaux.com"
+  },
   "engines": { "node": ">=18.18" },
   "scripts": {
     "dev": "next dev",
@@ -22,6 +50,12 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.6",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.1.0",
@@ -32,6 +66,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "daisyui": "^5.0.0",
     "jsdom": "^25.0.1",
+    "semantic-release": "^25.0.3",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.8.0",
     "vitest": "^2.1.8"
