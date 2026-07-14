@@ -69,7 +69,7 @@
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
     "daisyui": "^5.0.0",
-    "eslint": "^9.39.4",
+    "eslint": "^10.6.0",
     "eslint-config-next": "^15.5.20",
     "jsdom": "^29.1.1",
     "semantic-release": "^25.0.3",
